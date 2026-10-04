@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using StudyDashboardBackend.Data;
+using DotNetEnv;
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
