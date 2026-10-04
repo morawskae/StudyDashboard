@@ -1,8 +1,12 @@
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
+using StudyDashboardBackend.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddDbContext<StudyDashboardDbContext>(options=>
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddOpenApi();
 
 // Add services to the container.
