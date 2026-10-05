@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using StudyDashboardBackend.Dtos;
-using StudyDashboardBackend.Entities;
+using StudyDashboardBackend.Interfaces;
+using StudyDashboardBackend.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -11,58 +13,66 @@ namespace StudyDashboardBackend.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController(IConfiguration configuration) : ControllerBase
+    public class AuthController(IAuthService authService) : ControllerBase
     {
 
-        public static User user = new();
-
         [HttpPost("register")]
-        public ActionResult<User> Register(UserDto request)
+        public async Task<ActionResult<User>> Register(UserDto request)
         {
-            var hashedPassword = new PasswordHasher<User>()
-            .HashPassword(user,request.Password);
-
-            user.Username = request.Username;
-            user.PasswordHash = hashedPassword;
+            var user = await authService.RegisterAsync(request);
+            if(user is null)
+            {
+                return BadRequest("Username already exits.");
+            }
             return Ok(user);
         }
 
         [HttpPost("login")]
-        public ActionResult<string> Login(UserDto request)
+        public async Task<ActionResult<TokenResponseDto>> Login(UserDto request)
         {
-            //in real-life application make it return one message
-            if(user.Username != request.Username)
+            var response = authService.LoginAsync(request);
+            if(response is null)
             {
-                return BadRequest("User not found");
+                return BadRequest("Invalid username or password");
             }
-            if(new PasswordHasher<User>().VerifyHashedPassword(user, user.PasswordHash, request.Password) == PasswordVerificationResult.Failed)
-            {
-                return BadRequest("Invalid password");
-            }
-            string token = CreateToken(user);
-            return Ok(token);
+            return Ok(response);
         }
 
-        private string CreateToken(User user)
+        [HttpGet]
+        [Authorize]
+        public IActionResult AuthenticatedOnlyEndpoint()
         {
-            var claims = new List<Claim>
+            return Ok("You are authenticated!");
+        }
+
+        [Authorize(Roles="Admin,OtherAuthorizedRole")]
+        [HttpGet("admin-only")]
+        public IActionResult AdminOnlyEndpoint()
+        {
+            return Ok("You are an admin!");
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<TokenResponseDto>> RefreshToken (RefreshTokenRequestDto request)
+        {
+            var result = await authService.RefreshTokensAsync(request);
+            if (result is null || result.AccessToken is null || result.RefreshToken is null)
             {
-                new Claim(ClaimTypes.Name, user.Username)
-            };
+                return Unauthorized("invalild refresh token");
+            }
+            return Ok(result);
+        }
 
-            var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(configuration.GetValue<string>("AppSettings:Token")!));
-            
-            var creds = new SigningCredentials(key,SecurityAlgorithms.HmacSha512);
-
-            var tokenDescriptior = new JwtSecurityToken(
-                issuer: configuration.GetValue<string>("AppSettings:Issuer"),
-                audience: configuration.GetValue<string>("AppSettings:Audience"),
-                claims:claims,
-                expires: DateTime.UtcNow.AddDays(1),
-                signingCredentials:creds
-            );
-            return new JwtSecurityTokenHandler().WriteToken(tokenDescriptior);
+        [Authorize]
+        [HttpPost("logout")]
+        public async Task<ActionResult> Logout(LogoutReqeuestDto request)
+        {
+            var result = await authService.LogoutAsync(request.RefreshToken);
+            if (!result)
+            {
+                return BadRequest("Invalid refresh token.");
+            }
+            return Ok("Successfully logged in");
         }
 
     }

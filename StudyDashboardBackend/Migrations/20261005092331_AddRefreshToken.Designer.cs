@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StudyDashboardBackend.Data;
 
@@ -10,9 +11,11 @@ using StudyDashboardBackend.Data;
 namespace StudyDashboardBackend.Migrations
 {
     [DbContext(typeof(StudyDashboardDbContext))]
-    partial class StudyDashboardDbContextModelSnapshot : ModelSnapshot
+    [Migration("20261005092331_AddRefreshToken")]
+    partial class AddRefreshToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.12");
