@@ -64,6 +64,18 @@ namespace StudyDashboardBackend.Services
             };
         }
 
+        public async Task<List<ListCourseDto>> ListUsersActiveCoursesAsync(Guid userId)
+        {
+            return context.Courses
+            .Where(c=>c.UserId == userId && c.IsActive==true)
+             .Select(c=> new ListCourseDto{
+                Id = c.Id,
+                Code = c.Code,
+                Name = c.Name,
+                Credits = c.Credits
+                }).ToList();
+        }
+
         public async Task<List<ListCourseDto>> ListUsersCoursesAsync(Guid userId)
         {
             return context.Courses

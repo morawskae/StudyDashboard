@@ -49,6 +49,22 @@ namespace StudyDashboardBackend.Controllers
             return Ok(list);
             
         }
+
+    [HttpGet("my/active")]
+    [Authorize]
+    public async Task<ActionResult<List<ListCourseDto>>> ListUserActiveCoursesAsync()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if(userIdClaim is null)
+            {
+                return Unauthorized("Unauthorized access");
+            }
+            var userId = Guid.Parse(userIdClaim.Value);
+            var list = await courseService.ListUsersActiveCoursesAsync(userId);
+            return Ok(list);
+            
+        }
+
     [HttpDelete("{courseId:Guid}")]
     [Authorize]
     public async Task<IActionResult> DeleteCourseAsync(Guid courseId) //to-do maybe change to GUID
