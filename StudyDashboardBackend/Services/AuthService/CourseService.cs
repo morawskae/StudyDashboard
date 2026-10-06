@@ -25,7 +25,7 @@ namespace StudyDashboardBackend.Services
             return newCourse;
         }
 
-        public async Task DeleteCourseAsync(Guid userId, int courseId)
+        public async Task DeleteCourseAsync(Guid userId, Guid courseId)
         {
             var course = await context.Courses.FirstOrDefaultAsync(c=>c.Id == courseId);
             if(course is null)
@@ -40,7 +40,7 @@ namespace StudyDashboardBackend.Services
              await context.SaveChangesAsync();
         }
 
-        public async Task<DetailCourseDto?> DetailCourseAsync(Guid userId,int courseId)
+        public async Task<DetailCourseDto?> DetailCourseAsync(Guid userId,Guid courseId)
         {
             var course =  await context.Courses.FirstOrDefaultAsync(c=>c.Id == courseId);
             if(course is null)
@@ -77,7 +77,7 @@ namespace StudyDashboardBackend.Services
 
         }
 
-        public async Task UpdateCourseAsync(UpdateCourseDto courseRequest, Guid userId, int courseId)
+        public async Task UpdateCourseAsync(UpdateCourseDto courseRequest, Guid userId, Guid courseId)
         {
             var course = await context.Courses.FirstOrDefaultAsync(c=>c.Id == courseId);
             if(course is null)

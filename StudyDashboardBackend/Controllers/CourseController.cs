@@ -49,9 +49,9 @@ namespace StudyDashboardBackend.Controllers
             return Ok(list);
             
         }
-    [HttpDelete("{courseId:int}")]
+    [HttpDelete("{courseId:Guid}")]
     [Authorize]
-    public async Task<IActionResult> DeleteCourseAsync(int courseId) //to-do maybe change to GUID
+    public async Task<IActionResult> DeleteCourseAsync(Guid courseId) //to-do maybe change to GUID
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if(userIdClaim is null)
@@ -63,9 +63,9 @@ namespace StudyDashboardBackend.Controllers
             return NoContent();
         }
 
-    [HttpGet("{courseId:int}")]
+    [HttpGet("{courseId:Guid}")]
     [Authorize]
-    public async Task<ActionResult<DetailCourseDto>> GetDetailCourseAsync(int courseId)
+    public async Task<ActionResult<DetailCourseDto>> GetDetailCourseAsync(Guid courseId)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdClaim is null)
@@ -81,8 +81,8 @@ namespace StudyDashboardBackend.Controllers
             return Ok(courseDetails);
         }
 
-    [HttpPut("{courseId:int}")]
-    public async Task<IActionResult> UpdateCourseAsync(UpdateCourseDto requestDto,int courseId)
+    [HttpPut("{courseId:Guid}")]
+    public async Task<IActionResult> UpdateCourseAsync(UpdateCourseDto requestDto,Guid courseId)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if(userIdClaim is null)

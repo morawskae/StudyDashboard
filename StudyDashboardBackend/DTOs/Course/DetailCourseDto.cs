@@ -2,7 +2,7 @@ namespace StudyDashboardBackend.Dtos
 {
     public class DetailCourseDto
     {
-        public required int Id {get;set;}
+        public required Guid Id {get;set;}
         public required string Code {get;set;}
         public required string Name {get;set;}
         public required string Description {get;set;}
