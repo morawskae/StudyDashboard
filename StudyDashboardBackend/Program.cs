@@ -32,6 +32,8 @@ builder.Services.AddDbContext<StudyDashboardDbContext>(options=>
 options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IAuthService,AuthService>();
+builder.Services.AddScoped<ICourseService,CourseService>();
+
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
