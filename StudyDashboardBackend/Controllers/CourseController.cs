@@ -21,7 +21,7 @@ namespace StudyDashboardBackend.Controllers
 
         [HttpPost()]
         [Authorize]
-        public async Task<ActionResult<Course>> CreateCourse(CreateCourseDto courseRequest)
+        public async Task<ActionResult<Course>> CreateCourseAsync(CreateCourseDto courseRequest)
         {
 
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -30,8 +30,68 @@ namespace StudyDashboardBackend.Controllers
                 return Unauthorized("Unauthorized access");
             }
             var userId = Guid.Parse(userIdClaim.Value);
-            var newCourse = courseService.createCourse(courseRequest,userId);
+            var newCourse = await courseService.CreateCourseAsync(courseRequest,userId);
             return Ok(newCourse);
+        }
+
+    [HttpGet("my")]
+    [Authorize]
+    public async Task<ActionResult<List<ListCourseDto>>> ListUserCoursesAsync()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if(userIdClaim is null)
+            {
+                return Unauthorized("Unauthorized access");
+            }
+            var userId = Guid.Parse(userIdClaim.Value);
+
+            var list = await courseService.ListUsersCoursesAsync(userId);
+            return Ok(list);
+            
+        }
+    [HttpDelete("{courseId:int}")]
+    [Authorize]
+    public async Task<IActionResult> DeleteCourseAsync(int courseId) //to-do maybe change to GUID
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if(userIdClaim is null)
+            {
+                return Unauthorized("Unauthorized access");
+            }
+            var userId = Guid.Parse(userIdClaim.Value);
+            await courseService.DeleteCourseAsync(userId, courseId);
+            return NoContent();
+        }
+
+    [HttpGet("{courseId:int}")]
+    [Authorize]
+    public async Task<ActionResult<DetailCourseDto>> GetDetailCourseAsync(int courseId)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim is null)
+            {
+                return Unauthorized("Unauthorized access");
+            }
+            var userId = Guid.Parse(userIdClaim.Value);
+            var courseDetails = await courseService.DetailCourseAsync(userId,courseId);
+            if(courseDetails is null)
+            {
+                return NotFound();
+            }
+            return Ok(courseDetails);
+        }
+
+    [HttpPut("{courseId:int}")]
+    public async Task<IActionResult> UpdateCourseAsync(UpdateCourseDto requestDto,int courseId)
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if(userIdClaim is null)
+            {
+                return Unauthorized("Unauthorized access");
+            }
+            var userId = Guid.Parse(userIdClaim.Value);
+            await courseService.UpdateCourseAsync(requestDto,userId,courseId);    
+            return Ok();
         }
     }
 }
