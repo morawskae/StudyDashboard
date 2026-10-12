@@ -10,7 +10,7 @@ A personal study dashboard for managing university courses, tasks, schedules, ha
 * [ ] Weekly important tasks
 * [ ] Schedule and time blocking
 * [ ] Habit tracking
-* [ ] Course management
+* [X] Course management
 * [ ] Assignment and deadline tracking
 * [ ] Grade tracking
 * [ ] Course average calculation
@@ -33,8 +33,8 @@ A personal study dashboard for managing university courses, tasks, schedules, ha
 * [x] User ownership/authorization
 * [x] Active courses
 * [x] Controller
-* [x] Tests
-* [ ] Filtering by semester/name
+* [ ] Tests
+* [X] Filtering by semester/name
 
 ## Course API
 
