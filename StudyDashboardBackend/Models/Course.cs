@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace StudyDashboardBackend.Models
 {
     
@@ -7,7 +9,12 @@ namespace StudyDashboardBackend.Models
         public string Code {get;set;} = string.Empty;
         public string Name {get;set;}= string.Empty;
         public string Description {get;set;}=string.Empty;
+    
+
+
+        [Range(1.0,10.0)]
         public int Credits {get;set;}=1; //limit the credit int to positive numbers
+        [Range(1.0,7.0)]
         public int Semester {get;set;}=1; //limit the semester int to range 1-7
         public bool IsActive {get;set;}=true;
 

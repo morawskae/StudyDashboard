@@ -1,10 +1,15 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace StudyDashboardBackend.Models
 {
     public class Grade
     {
         public Guid Id {get;set;}
         public string Name {get;set;} = string.Empty;
+
         public decimal Value {get;set;}=2;
+
+        [Range(1.0,10.0)]
         public int Weight {get;set;}=1;
         public DateTime addedAt {get;set;}= DateTime.UtcNow;
 

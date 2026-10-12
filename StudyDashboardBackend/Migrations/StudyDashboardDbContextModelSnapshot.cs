@@ -25,6 +25,7 @@ namespace StudyDashboardBackend.Migrations
 
                     b.Property<string>("Code")
                         .IsRequired()
+                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Credits")
@@ -32,13 +33,17 @@ namespace StudyDashboardBackend.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
+                        .HasMaxLength(250)
                         .HasColumnType("TEXT");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("INTEGER");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(100)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Semester")
@@ -51,7 +56,47 @@ namespace StudyDashboardBackend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Courses");
+                    b.ToTable("Courses", t =>
+                        {
+                            t.HasCheckConstraint("CK_Course_Credits", "[Credits]>=1 AND [Credits]<=10");
+
+                            t.HasCheckConstraint("CK_Course_Semester", "[Semester]>=1 AND [Semester]<=7");
+                        });
+                });
+
+            modelBuilder.Entity("StudyDashboardBackend.Models.Grade", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Weight")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("addedAt")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Grades", t =>
+                        {
+                            t.HasCheckConstraint("CK_Grade_Value", "[Value] IN (2.0, 3.0, 3.5, 4.0, 4.5, 5.0)");
+
+                            t.HasCheckConstraint("CK_Grade_Weight", "[Weight]>=1 AND [Weight]<=10");
+                        });
                 });
 
             modelBuilder.Entity("StudyDashboardBackend.Models.User", b =>
@@ -92,6 +137,22 @@ namespace StudyDashboardBackend.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("StudyDashboardBackend.Models.Grade", b =>
+                {
+                    b.HasOne("StudyDashboardBackend.Models.Course", "Course")
+                        .WithMany("Grades")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+                });
+
+            modelBuilder.Entity("StudyDashboardBackend.Models.Course", b =>
+                {
+                    b.Navigation("Grades");
                 });
 
             modelBuilder.Entity("StudyDashboardBackend.Models.User", b =>
