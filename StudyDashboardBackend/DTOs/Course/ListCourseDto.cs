@@ -6,5 +6,6 @@ namespace StudyDashboardBackend.Dtos
         public required string Code {get;set;}
         public required string Name {get;set;}
         public required int Credits {get;set;}
+        public required int Semester {get;set;}
     }
 }

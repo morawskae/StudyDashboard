@@ -19,9 +19,9 @@ namespace StudyDashboardBackend.Migrations
 
             modelBuilder.Entity("StudyDashboardBackend.Models.Course", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Code")
                         .IsRequired()

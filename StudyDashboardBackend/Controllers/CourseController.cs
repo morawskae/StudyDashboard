@@ -36,7 +36,7 @@ namespace StudyDashboardBackend.Controllers
 
     [HttpGet("my")]
     [Authorize]
-    public async Task<ActionResult<List<ListCourseDto>>> ListUserCoursesAsync()
+    public async Task<ActionResult<List<ListCourseDto>>> ListUserCoursesAsync([FromQuery] CourseQueryParms courseQueryParms)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if(userIdClaim is null)
@@ -45,7 +45,7 @@ namespace StudyDashboardBackend.Controllers
             }
             var userId = Guid.Parse(userIdClaim.Value);
 
-            var list = await courseService.ListUsersCoursesAsync(userId);
+            var list = await courseService.ListUsersCoursesAsync(userId,courseQueryParms);
             return Ok(list);
             
         }

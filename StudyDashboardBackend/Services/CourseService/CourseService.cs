@@ -66,26 +66,38 @@ namespace StudyDashboardBackend.Services
 
         public async Task<List<ListCourseDto>> ListUsersActiveCoursesAsync(Guid userId)
         {
-            return context.Courses
+            return await context.Courses
             .Where(c=>c.UserId == userId && c.IsActive==true)
              .Select(c=> new ListCourseDto{
                 Id = c.Id,
                 Code = c.Code,
                 Name = c.Name,
-                Credits = c.Credits
-                }).ToList();
+                Credits = c.Credits,
+                Semester = c.Semester,
+                }).ToListAsync();
         }
 
-        public async Task<List<ListCourseDto>> ListUsersCoursesAsync(Guid userId)
+        public async Task<List<ListCourseDto>> ListUsersCoursesAsync(Guid userId, CourseQueryParms courseQueryParms)
         {
-            return context.Courses
-            .Where(c=>c.UserId == userId)
-            .Select(c=> new ListCourseDto{
+
+            var user_courses = context.Courses
+            .Where(c=>c.UserId == userId);
+
+            if(courseQueryParms.Semester is not null)
+            {
+            user_courses = user_courses.Where(c=>c.Semester == courseQueryParms.Semester);
+            }
+            if(courseQueryParms.Name is not null)
+            {
+                user_courses=user_courses.Where(c=>c.Name.Contains(courseQueryParms.Name));
+            }
+            return await user_courses.Select(c=> new ListCourseDto{
                 Id = c.Id,
                 Code = c.Code,
                 Name = c.Name,
-                Credits = c.Credits
-                }).ToList();
+                Credits = c.Credits,
+                Semester = c.Semester
+                }).ToListAsync();
 
         }
 
