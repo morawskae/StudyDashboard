@@ -1,4 +1,3 @@
-using System.Security.Permissions;
 using Microsoft.EntityFrameworkCore;
 using StudyDashboardBackend.Data;
 using StudyDashboardBackend.Dtos;
@@ -6,7 +5,7 @@ using StudyDashboardBackend.Models;
 
 namespace StudyDashboardBackend.Services
 {
-    public class CourseService(StudyDashboardDbContext context, IConfiguration configuration) : ICourseService
+    public class CourseService(StudyDashboardDbContext context) : ICourseService
     {
         public async Task<Course> CreateCourseAsync(CreateCourseDto courseRequest, Guid userId)
         {
@@ -19,7 +18,7 @@ namespace StudyDashboardBackend.Services
                 IsActive=true,
                 UserId = userId
             };
-             context.Courses.Add(newCourse);
+             await context.Courses.AddAsync(newCourse);
              await context.SaveChangesAsync();
 
             return newCourse;
