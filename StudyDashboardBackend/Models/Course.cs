@@ -15,5 +15,7 @@ namespace StudyDashboardBackend.Models
         public Guid UserId {get;set;}
         public User User {get;set;}=null!;
 
+        public ICollection<Grade> Grades {get;set;} = new List<Grade>();
+
     }
 }
