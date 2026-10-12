@@ -33,7 +33,7 @@ A personal study dashboard for managing university courses, tasks, schedules, ha
 * [x] User ownership/authorization
 * [x] Active courses
 * [x] Controller
-* [] Tests
+* [ ] Tests
 * [X] Filtering by semester/name
 
 ## Course API
