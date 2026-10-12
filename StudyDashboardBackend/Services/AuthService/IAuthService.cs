@@ -2,7 +2,7 @@ using StudyDashboardBackend.Dtos;
 using StudyDashboardBackend.Models;
 using Superpower.Model;
 
-namespace StudyDashboardBackend.Interfaces
+namespace StudyDashboardBackend.Services
 {
     public interface IAuthService
     {

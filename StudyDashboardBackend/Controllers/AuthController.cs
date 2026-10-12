@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using StudyDashboardBackend.Dtos;
-using StudyDashboardBackend.Interfaces;
+using StudyDashboardBackend.Services;
 using StudyDashboardBackend.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

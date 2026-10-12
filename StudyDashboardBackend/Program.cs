@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using StudyDashboardBackend.Data;
 using DotNetEnv;
-using StudyDashboardBackend.Interfaces;
 using StudyDashboardBackend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -33,6 +32,7 @@ options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")
 builder.Services.AddOpenApi();
 builder.Services.AddScoped<IAuthService,AuthService>();
 builder.Services.AddScoped<ICourseService,CourseService>();
+builder.Services.AddScoped<IGradeService,GradeService>();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

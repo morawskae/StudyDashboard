@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using StudyDashboardBackend.Data;
 using StudyDashboardBackend.Dtos;
 using StudyDashboardBackend.Models;
 using StudyDashboardBackend.Services;

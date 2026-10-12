@@ -1,6 +1,5 @@
 using StudyDashboardBackend.Dtos;
 using StudyDashboardBackend.Models;
-using StudyDashboardBackend.Interfaces;
 using StudyDashboardBackend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
